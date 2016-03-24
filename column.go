@@ -52,8 +52,39 @@ func (col ColField) String() string {
 	return fmt.Sprintf(" %s \n", col.tag)
 }
 
-func (col ColField) alter() string {
-	var str = col.colType
+func (col ColField) changeStmt() string {
+	var str = " MODIFY`" + col.colName + "`" + col.colType
+
+	if col.notNull {
+		str += " NOT NULL"
+	} else {
+		str += " NULL "
+	}
+
+	if col.autoIncr {
+		str += " AUTO_INCREMENT"
+	}
+
+	if col.defaultVal != nil {
+		var val string
+		switch col.defaultVal.(type) {
+		case string:
+			val = "'" + col.defaultVal.(string) + "'"
+		default:
+			val = fmt.Sprint(val)
+		}
+		str += " DEFAULT " + val
+	}
+
+	return str
+}
+
+func (col ColField) dropStmt() string {
+	return " DROP `" + col.colName + "`"
+}
+
+func (col ColField) addStmt() string {
+	var str = " ADD `" + col.colName + "`" + col.colType
 
 	if col.notNull {
 		str += " NOT NULL"

@@ -15,7 +15,7 @@ type User struct {
 type UserBean struct {
 	Bean  `name:"users" charset:"utf8" engine:"InnoDB"`
 	Name  string `orm:"name varchar(30) null default 'foo'"`
-	Age   string `orm:"age int(13) not null default 0"`
+	Age   string `orm:"age int(12) not null default 0"`
 	Model *User
 }
 

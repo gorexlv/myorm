@@ -19,7 +19,7 @@ type AlterStatement struct {
 	err      error
 }
 
-// NewAlterStatement returns new AlterStatement instance
+// NewAlterStatement returns new AlterStatement
 func NewAlterStatement(table *Table) *AlterStatement {
 	return &AlterStatement{
 		table: table,
@@ -38,19 +38,19 @@ func (as *AlterStatement) explain() {
 	for _, item := range as.addes {
 		f := as.table.fields[item]
 		if f.colName != "" {
-			items = append(items, " ADD "+"`"+f.colName+"` "+f.alter())
+			items = append(items, f.addStmt())
 		}
 	}
 	for _, item := range as.changes {
 		f := as.table.fields[item]
 		if f.colName != "" {
-			items = append(items, " MODIFY "+"`"+f.colName+"` "+f.alter())
+			items = append(items, " MODIFY "+"`"+f.colName+"` "+f.changeStmt())
 		}
 	}
 	for _, item := range as.drops {
 		f := as.table.fields[item]
 		if f.colName != "" {
-			items = append(items, " DROP "+" `"+f.colName+"` "+f.alter())
+			items = append(items, " DROP "+" `"+f.colName+"` "+f.dropStmt())
 		}
 	}
 
